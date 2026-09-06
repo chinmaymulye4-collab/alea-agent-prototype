@@ -1,0 +1,15 @@
+ name  
+-------
+ Anna
+ Ben
+ Clara
+ David
+ Elif
+(5 rows)
+
+   name   
+----------
+ Deadlift
+ Pull Up
+(2 rows)
+
