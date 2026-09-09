@@ -1,0 +1,165 @@
+{
+  "name": "Testing Agents",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -224,
+        -48
+      ],
+      "id": "80abcb8e-83cf-482a-a9e8-194614591a07",
+      "name": "When chat message received",
+      "webhookId": "eb8e652d-fe22-4483-ae51-fd56389a9ca6"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        96,
+        -16
+      ],
+      "id": "1e5550ce-3234-4594-bd3c-5895fd5def68",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        64,
+        272
+      ],
+      "id": "56368227-9b6d-4578-8c31-87af8e6a8e04",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        416,
+        224
+      ],
+      "id": "da1667fe-34c1-44d4-894f-44cb9e2fbf4a",
+      "name": "Calculator"
+    },
+    {
+      "parameters": {
+        "additionalFields": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-serpapi.serpApiTool",
+      "typeVersion": 1,
+      "position": [
+        256,
+        272
+      ],
+      "id": "f2442eeb-1497-451e-880a-423bf932d47e",
+      "name": "Google search in SerpApi",
+      "credentials": {
+        "serpApi": {
+          "id": "I37IA3m470COvNaN",
+          "name": "SerpApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatNvidia",
+      "typeVersion": 1,
+      "position": [
+        -96,
+        176
+      ],
+      "id": "88c45b1e-8598-40f7-ad0b-f31603986be3",
+      "name": "NVIDIA Nemotron Chat Model",
+      "credentials": {
+        "nvidiaApi": {
+          "id": "d9gUQCwEfclyBQMl",
+          "name": "NVIDIA Nemotron account 3"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google search in SerpApi": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NVIDIA Nemotron Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "79e74ea2-d289-4291-869c-4ac991802457",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3ade1e229163e98b53bbb21ab503a87dfafc11b7c69b28ee80ff89a24abe0e36"
+  },
+  "nodeGroups": [],
+  "id": "B1VIxM5lr8A7Jjim",
+  "tags": []
+}

@@ -1,0 +1,292 @@
+{
+  "name": "Testing Agents",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        128,
+        -368
+      ],
+      "id": "8cd32ae7-5fd2-4b47-a329-53113af08c0b",
+      "name": "When chat message received",
+      "webhookId": "e16ad7c3-ec51-45ff-a1d2-5a08b1af70b8"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        496,
+        -144
+      ],
+      "id": "428836b1-7d5d-4c3a-b9c7-be864ffec8b8",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        480,
+        -368
+      ],
+      "id": "b61ae50b-9d69-4c74-8b16-74dcfe8fccf4",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "additionalFields": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-serpapi.serpApiTool",
+      "typeVersion": 1,
+      "position": [
+        624,
+        -144
+      ],
+      "id": "8c31fe37-9795-4b5d-bf53-eeabbd11f756",
+      "name": "Google search in SerpApi",
+      "credentials": {
+        "serpApi": {
+          "id": "z2JRyRMieLfg6o52",
+          "name": "SerpApi account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        752,
+        -144
+      ],
+      "id": "af558bc4-1daa-43d0-95bb-cf34ae465a14",
+      "name": "Calculator"
+    },
+    {
+      "parameters": {
+        "model": "nvidia/nemotron-3-super-120b-a12b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatNvidia",
+      "typeVersion": 1,
+      "position": [
+        352,
+        -160
+      ],
+      "id": "63031ece-ce61-4e6c-825c-cf76f36119e0",
+      "name": "NVIDIA Nemotron Chat Model",
+      "credentials": {
+        "nvidiaApi": {
+          "id": "zKdmztvHAtT4NAi8",
+          "name": "NVIDIA Nemotron account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT name FROM students;\nSELECT s.name FROM students AS s;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        880,
+        -272
+      ],
+      "id": "364d3e97-a231-4902-9ee7-429249b65170",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "91qA1hDMtt0PewzY",
+          "name": "Postgres account 2"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        896,
+        -640
+      ],
+      "id": "350d5920-35ab-4d24-9285-648178cd72a0",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT name FROM students\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        1216,
+        -384
+      ],
+      "id": "7f19a61c-d7f9-494e-90d4-22756561ffb9",
+      "name": "Expected",
+      "credentials": {
+        "postgres": {
+          "id": "Qo95dIM9DifzXMrx",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT name FROM exercises;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        1216,
+        -608
+      ],
+      "id": "dc264e7d-66cb-4fd5-88ac-53d8bf6da55f",
+      "name": "StudentQuery",
+      "credentials": {
+        "postgres": {
+          "id": "91qA1hDMtt0PewzY",
+          "name": "Postgres account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const expected = [...new Set($('Expected').all().map(i => JSON.stringify(i.json)))].map(s => JSON.parse(s));\nconst actual   = $('StudentQuery').all().map(i => i.json);\n\nfunction normalise(rows) {\n  return rows\n    .map(row => Object.values(row).map(v => String(v)).sort().join('|'))\n    .sort();\n}\n\nconst isCorrect = JSON.stringify(normalise(expected)) === JSON.stringify(normalise(actual));\n\nreturn [{ json: { is_correct: isCorrect } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        -384
+      ],
+      "id": "d0a13d68-5e0e-442e-b8c8-5ca5cb9da712",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google search in SerpApi": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NVIDIA Nemotron Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "StudentQuery",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "StudentQuery": {
+      "main": [
+        [
+          {
+            "node": "Expected",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Expected": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "bf76929d-61a5-4824-a916-259832f1b121",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c1c26533b0240d145373abc7987e8350a400e21c8702374338adbe165335ffd4"
+  },
+  "nodeGroups": [],
+  "id": "CFQbKE09R8xOnJML",
+  "tags": []
+}
